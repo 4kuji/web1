@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container emp-profile">
+    
+        
+           <div  style="text-align:justify;">
+            
+<h4> Doctor name       :-{{form.first_name}}</h4>
+<h4> Doctor Email        :-{{form.email}}<p style="font-size:14"> Event will be store in Doctor's email address's google calendar</p></h4>
+<h4> appointment date :{{start}}</h4>
+<h4> start time :{{time}}</h4>
+<h4> end time :{{end_time}}</h4>
+
+   <form method="POST">
+    <input type="date" name="starts">
+    <input type="time" name="time">
+    <input type="email" name="email">
+    <input type="text" name="required" placeholder="Event Title">
+    <button type="submit">Create Event</button>
+</form>
+
+
+{%endblock%}
