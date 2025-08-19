@@ -1,37 +1,16 @@
 import time
+from django.http import HttpResponse
+from django.template import loader
+from django.contrib import messages
 from django.shortcuts import render,redirect,loader
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 import datetime
-from django.utils import timezone
 from .models import Custom,Event,Attendee
 from .forms import CustomCreationForm
-from datetime import timedelta
-import pytz
+from datetime import timedelta, datetime
 import sys
-
-start_time =0
-end_time=0
-
-def bookform(request,pk):
-    form = Custom.objects.get(id=pk)
-    if request.method == 'POST':
-        form = Custom.objects.get(id=pk)
-        req = request.POST['req']
-        start = request.POST['start']
-        time = request.POST['time']
-        email = request.POST['email']
-        starts = start +' '+ time +':' '00'
-    
-        start_time = datetime.datetime.strptime(starts,"%Y-%m-%d %H:%M:%S")
-        end_time  = start_time + timedelta(minutes=45)
-        context = { 'req':req,'start':start,'time':time,'start_time':start_time, 'end_time':end_time,'email':email,'form':form}
-        return  render(request, 'confirm.html',context)
-        
-
-    
-    return render(request,'bookform.html',{'form':form})
 
 
 
@@ -39,14 +18,40 @@ def confirm(request):
     if request.method == 'POST':
         req = request.POST['required']
         start = request.POST['starts']
-        time = request.POST['time']
+        time_str = request.POST['time']
         email = request.POST['email']
         
-        # Sadece veritabanına kaydet
+        # Zaman string'ini time objesine çevir
+        time_obj = datetime.strptime(time_str, "%H:%M").time()
+       
+        # Seçilen tarih ve saati birleştir
+        start_date = datetime.strptime(start, "%Y-%m-%d").date()
+        start_datetime = datetime.combine(start_date, time_obj)
+        
+        # Sonraki 1 saat aralığını hesapla
+        end_datetime = start_datetime + timedelta(hours=1)
+        
+        # Aynı tarihte etkinlik var mı kontrol et
+        conflicting_events = Event.objects.filter(
+            start_time__date=start_date
+        )
+        
+        # Her bir etkinlik için zaman çakışması kontrol et
+        for event in conflicting_events:
+            # Event zamanını al (zaten time objesi)
+            event_time = event.time
+            event_start = datetime.combine(event.start_time.date(), event_time)
+            event_end = event_start + timedelta(hours=1)
+            
+            # Zaman çakışması kontrolü
+            if (start_datetime < event_end and end_datetime > event_start):
+                return render(request, 'not_ available.html')
+        
+        # Çakışma yoksa veritabanına kaydet
         event = Event.objects.create(
             title=req,
-            start_time=start,
-            end_time=end_time,
+            start_time=start_datetime,
+            time=time_obj,
             attendee_email=email
         )
         return redirect('home')
@@ -55,49 +60,8 @@ def confirm(request):
 
 
 
-def viewevent(request):
-    # Şu andan itibarenki etkinlikleri getir
-    now = timezone.now()
-    events = Event.objects.filter(start_time__gte=now).order_by('start_time')[:10]
-    
-    event_list = []
-    for event in events:
-        # Etkinliğin katılımcılarını al
-        attendees = list(Attendee.objects.filter(event=event).values_list('email', flat=True))
-        
-        event_list.append({
-            'title': event.title,
-            'start': event.start_time,
-            'end': event.end_time,
-            'attendees': attendees
-        })
-    
-    if not event_list:
-        print('No upcoming events found.')
-    
-    return render(request, 'viewevent.html', {'events': event_list})
-
-def doctor(request):
-    form = Custom.objects.filter( )
-    
-    return render(request,'doctor.html')
-
 def home(request):
     q = request.GET.get('q') 
-    # if request.GET.get('q') != None:
-    #     blog = Blog.objects.filter(
-    #         Q( topic__name__icontains=q) &
-    #         Q(draft = False) ) 
-        
-    # else:
-    #     blog = Blog.objects.filter(draft=False)
-
-
-        
-    # topic = Topic.objects.all()
-    # drafts = Blog.objects.filter(draft=True)
-    
-    # context = {'blog':blog,'topics':topic,'list':q,"draft":drafts}
     return render(request,'home.html')
 
 

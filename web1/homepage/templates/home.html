@@ -25,62 +25,9 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2">
-                <p><a href={% url 'create_blog' %}><button type="button" class="btn btn-primary mb-3">Add Blogs</button></a><a href="{% url 'logout_form' %}" class="profile-edit-btn" >
-                <input type="button" class="profile-edit-btn" name="btnAddMore" value="Log Out"/></a></p>
-            </div>
+            
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-work">
-                    <p> LINK</p>
-                    <a href={% url 'home' %} style="color:Blue">Blogs</a><br/>
                     
-                    
-                </div>
-            </div>
-
-             
-            <div class="col-md-8">
-                <div class="tab-content profile-tab" id="myTabContent">
-                    <h4 class="mb-4">Draft Blogs</h4>
-                         {%for blogs in draft %}   
-                         {% comment %} {% if blog.draft == False %} {% endcomment %}
-                            <div class="row">
-                                <div class="col-md-4">
-                                  <div class="card mb-4 box-shadow">   
-                        <img class="card-img-top" src='{{blogs.image.url}}' alt="Card image cap">
-                        <div class="card-body">
-                          <h5 class="card-title">{{blogs.title}}</h5>
-                          <h6 class="card-title">{{blogs.topic}}</h6>
-                          <p class="card-text">{{blogs.summary|slice:":15"}}...</p>
-                          <a href={% url 'blog' blogs.id %} class="btn btn-primary">Read</a>
-                        </div></div></div></div>
-                {% comment %} {%endif %} {% endcomment %}
-                          {%endfor %}
-                    
-
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                       <h4>Published Blog</h4>
-                        {%for blogs in blog %}   
-                        {% comment %} {% if blog.draft == False %} {% endcomment %}
-                           <div class="row">
-                               <div class="col-md-4">
-                                 <div class="card mb-4 box-shadow">   
-                       <img class="card-img-top" src='{{blogs.image.url}}' alt="Card image cap">
-                       <div class="card-body">
-                         <h5 class="card-title">{{blogs.title}}</h5>
-                         <h6 class="card-title">{{blogs.topic}}</h6>
-                         <p class="card-text">{{blogs.summary|slice:":15"}}...</p>
-                         <a href={% url 'blog' blogs.id %} class="btn btn-primary">Read</a>
-                       </div></div></div></div>
-               {% comment %} {%endif %} {% endcomment %}
-                         {%endfor %}
-                        
-                    </div>
-
-
-                   
 
 
 
@@ -98,58 +45,46 @@
                             <h5>
                               {{user.username}}
                             </h5>
-                            <h6>
-                            </h6>
-                            <h3 class=>Category</h3>
-                            
                 </div>
             </div>
+
+            <style>
+        .btn-primary {
+            background: linear-gradient(0deg, #FC1074 0%, #FE4B2A 100%);
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            border-radius: 30px;
+            border: none;
+            transition: transform 100ms ease-in-out !important;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
             <div class="col-md-2">
-                <p><a href="{% url 'logout_form' %}" class="profile-edit-btn" >
-                <input type="button" class="profile-edit-btn" name="btnAddMore" value="Log Out"/></a></p>
+                <p><a href="{% url 'logout_form' %}" class="btn-primary" >
+                <input type="button" class="btn-primary" name="btnAddMore" value="Log Out"/></a></p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-work">
-                    <p> LESSONS</p>
-                    <a href={% url 'home' %} style="color:Blue">HOME</a><br/>
-                    <a href={% url 'home' %} style="color:Blue">HOME</a><br/>
-                    <a href={% url 'home' %} style="color:Blue">HOME</a><br/>
-                    <a href={% url 'home' %} style="color:Blue">HOME</a><br/>
-                </div>
-            </div>
-            
-            <div class="col-md-8">
-                <div class="tab-content profile-tab" id="myTabContent">
-                    {% comment %} <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> {% endcomment %}
-                  
-                       {%for blogs in blog %}   
-                             {% comment %} {% if blog.draft == False %} {% endcomment %}
-                                <div class="row">
-                                    <div class="col-md-4">
-                                      <div class="card mb-4 box-shadow">   
-                            <img class="card-img-top" src='{{blogs.image.url}}' alt="Card image cap">
-                            <div class="card-body">
-                              <h5 class="card-title">{{blogs.title}}</h5>
-                              <h6 class="card-title">{{blogs.topic}}</h6>
-                              <p class="card-text">{{blogs.summary|slice:":15"}}...</p>
-                              <a href={% url 'blog' blogs.id %} class="btn btn-primary">Read</a>
-                              {%for msg in msg%}
-                                   {{msg}} 
-                              {%endfor%}
-                            </div></div></div></div>
-                    {% comment %} {%endif %} {% endcomment %}
-                              {%endfor %}
-                        
-                             
-                
-                            </div>
-                          </div>
-
-                                </div>
-                    </div>
-                    </div>
+                    <h4>LESSONS</h4> 
+                    <a href="/confirm" style="color:rgb(31, 31, 168)">FUNDAMENTALS</a><br/>
+                    <a href="/viewevent" style="color:rgb(31, 31, 168)">BILLING</a><br/>
+                    <a href={% url 'home' %} style="color:rgb(31, 31, 168)">CYCLES</a><br/>
                 </div>
             </div>
         </div>
@@ -161,8 +96,32 @@
     
         
     <div class="center"><center>
+    <style>
+        .btn-primary {
+            background: linear-gradient(0deg, #FC1074 0%, #FE4B2A 100%);
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            border-radius: 30px;
+            border: none;
+            transition: transform 100ms ease-in-out !important;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
     <h3 class="register-heading mb-3">If you have already register then login or register your self</h3>
-    <a href="{% url 'log' %}"><button class="btn btn-primary">Login</button></a> 
-    <a href="{% url 'register' %}"><button class="btn btn-primary">Register</button></a> 
+    <a href="{% url 'log' %}"><button class="btn-primary">Login</button></a> 
+    <a href="{% url 'register' %}"><button class="btn-primary">Register</button></a> 
 {% endif %}
 {% endblock %}

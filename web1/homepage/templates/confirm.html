@@ -5,18 +5,53 @@
         
            <div  style="text-align:justify;">
             
-<h4> Doctor name       :-{{form.first_name}}</h4>
-<h4> Doctor Email        :-{{form.email}}<p style="font-size:14"> Event will be store in Doctor's email address's google calendar</p></h4>
-<h4> appointment date :{{start}}</h4>
-<h4> start time :{{time}}</h4>
-<h4> end time :{{end_time}}</h4>
+<h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio voluptas consequatur quidem veniam temporibus, saepe aliquam maiores, autem illum ut nobis similique tenetur molestias doloremque tempora quasi. Dolorem, quas quaerat.</h5>
+<h4> Please choose a event date</h4>
+
 
    <form method="POST">
-    <input type="date" name="starts">
-    <input type="time" name="time">
+    {% csrf_token %}
+    
+    <input type="date" id="id_date" name="starts">
+
+<script>
+document.getElementById("id_date").addEventListener("input", function () {
+    let d = new Date(this.value);
+    if (d.getDay() === 0 || d.getDay() === 6) {  // 0=Pazar, 6=Cumartesi
+        alert("You can not choose Saturday or Sunday!");
+        this.value = "";
+    }
+});
+
+</script>
+    <style>
+        .btn-primary {
+            background: linear-gradient(0deg, #FC1074 0%, #FE4B2A 100%);
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            border-radius: 30px;
+            border: none;
+            transition: transform 100ms ease-in-out !important;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    <input type="time" name="time">    
     <input type="email" name="email">
     <input type="text" name="required" placeholder="Event Title">
-    <button type="submit">Create Event</button>
+    <button type="submit" class="btn-primary">Create Event</button>
 </form>
 
 

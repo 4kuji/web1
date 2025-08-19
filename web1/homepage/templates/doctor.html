@@ -141,13 +141,30 @@
             <div class="col-md-4">
                 <div class="profile-work">
                     <p> LINK</p>
-                    <a href={% url 'home' %} >Blogs</a><br/>
+                    <a href={% url 'home' %} >Home</a><br/>
                     
-                    <a href={% url 'doctor' %}style="color:Blue">Doctor</a><br/>
+                    
                     
                 </div>
             </div>
+            <div class="container emp-profile">
+    
+        
+           <div  style="text-align:justify;">
             
+                <h4> Doctor name       :-{{form.first_name}}</h4>
+                <h4> Doctor Email        :-{{form.email}}<p style="font-size:14"></p></h4>
+                <h4> appointment date :{{start}}</h4>
+                <h4> start time :{{time}}</h4>
+                <h4> end time :{{end_time}}</h4>
+
+                    <form method="POST">
+                    <input type="date" name="starts">
+                    <input type="time" name="time">
+                    <input type="email" name="email">
+                    <input type="text" name="required" placeholder="Event Title">
+                    <button type="submit">Create Event</button>
+                    </form>
             <div class="col-md-8">
                 <div class="tab-content profile-tab" id="myTabContent">
                     {% comment %} <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> {% endcomment %}
@@ -193,3 +210,5 @@
     <a href="{% url 'register' %}"><button class="btn btn-primary">Register</button></a> 
 {% endif %}
 {% endblock %}
+
+
