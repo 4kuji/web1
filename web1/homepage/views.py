@@ -14,7 +14,51 @@ import sys
 
 
 
-def confirm(request):
+def fundamentals(request):
+    if request.method == 'POST':
+        req = request.POST['required']
+        start = request.POST['starts']
+        time_str = request.POST['time']
+        email = request.POST['email']
+        
+        # Zaman string'ini time objesine çevir
+        time_obj = datetime.strptime(time_str, "%H:%M").time()
+       
+        # Seçilen tarih ve saati birleştir
+        start_date = datetime.strptime(start, "%Y-%m-%d").date()
+        start_datetime = datetime.combine(start_date, time_obj)
+        
+        # Sonraki 1 saat aralığını hesapla
+        end_datetime = start_datetime + timedelta(hours=2)
+        
+        # Aynı tarihte etkinlik var mı kontrol et
+        conflicting_events = Event.objects.filter(
+            start_time__date=start_date
+        )
+        
+        # Her bir etkinlik için zaman çakışması kontrol et
+        for event in conflicting_events:
+            # Event zamanını al (zaten time objesi)
+            event_time = event.time
+            event_start = datetime.combine(event.start_time.date(), event_time)
+            event_end = event_start + timedelta(hours=2)
+            
+            # Zaman çakışması kontrolü
+            if (start_datetime < event_end and end_datetime > event_start):
+                return render(request, 'not_ available.html')
+        
+        # Çakışma yoksa veritabanına kaydet
+        event = Event.objects.create(
+            title=req,
+            start_time=start_datetime,
+            time=time_obj,
+            attendee_email=email
+        )
+        return redirect('home')
+    
+    return render(request, 'fundamentals.html')
+
+def billing(request):
     if request.method == 'POST':
         req = request.POST['required']
         start = request.POST['starts']
@@ -56,9 +100,51 @@ def confirm(request):
         )
         return redirect('home')
     
-    return render(request, 'confirm.html')
+    return render(request, 'billing.html')
 
-
+def cycles(request):
+    if request.method == 'POST':
+        req = request.POST['required']
+        start = request.POST['starts']
+        time_str = request.POST['time']
+        email = request.POST['email']
+        
+        # Zaman string'ini time objesine çevir
+        time_obj = datetime.strptime(time_str, "%H:%M").time()
+       
+        # Seçilen tarih ve saati birleştir
+        start_date = datetime.strptime(start, "%Y-%m-%d").date()
+        start_datetime = datetime.combine(start_date, time_obj)
+        
+        # Sonraki 1 saat aralığını hesapla
+        end_datetime = start_datetime + timedelta(hours=1)
+        
+        # Aynı tarihte etkinlik var mı kontrol et
+        conflicting_events = Event.objects.filter(
+            start_time__date=start_date
+        )
+        
+        # Her bir etkinlik için zaman çakışması kontrol et
+        for event in conflicting_events:
+            # Event zamanını al (zaten time objesi)
+            event_time = event.time
+            event_start = datetime.combine(event.start_time.date(), event_time)
+            event_end = event_start + timedelta(hours=1)
+            
+            # Zaman çakışması kontrolü
+            if (start_datetime < event_end and end_datetime > event_start):
+                return render(request, 'not_ available.html')
+        
+        # Çakışma yoksa veritabanına kaydet
+        event = Event.objects.create(
+            title=req,
+            start_time=start_datetime,
+            time=time_obj,
+            attendee_email=email
+        )
+        return redirect('home')
+    
+    return render(request, 'cycles.html')
 
 def home(request):
     q = request.GET.get('q') 
