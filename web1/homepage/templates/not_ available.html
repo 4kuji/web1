@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +8,34 @@
     <title>Not Available</title>
 </head>
 <body>
-    <h1>This date is already taken.</h1>
-    <a href="/confirm"><button class="btn btn-primary">Go to Previous Step</button></a>
+    <style>
+        .btn-primary {
+            background: linear-gradient(0deg, #FC1074 0%, #FE4B2A 100%);
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            border-radius: 30px;
+            border: none;
+            transition: transform 100ms ease-in-out !important;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    <h1><p style="color: rgb(237, 237, 237);"></p>This date is already taken.</h1>
+    <!-- <a href="/"><button class="btn-primary">Go to Previous Step</button></a> -->
+     <a href="javascript:history.back()" class="btn-primary">Go to Previous Step</a>
     
 </body>
 </html>
+{%endblock%}

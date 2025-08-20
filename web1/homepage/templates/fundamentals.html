@@ -48,9 +48,8 @@ document.getElementById("id_date").addEventListener("input", function () {
             transform: scale(1.05);
         }
     </style>
-    <input type="time" name="time">    
+    <input type="time"  name="time" min="05:00:00" max="14:00:00" required />  
     <input type="email" name="email">
-    <input type="text" name="required" placeholder="Event Title">
     <button type="submit" class="btn-primary">Create Event</button>
 </form>
 

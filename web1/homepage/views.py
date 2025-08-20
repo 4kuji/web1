@@ -12,11 +12,12 @@ from .forms import CustomCreationForm
 from datetime import timedelta, datetime
 import sys
 
-
+shift_1= datetime.strptime("05:00", "%H:%M").time()
+shift_2= datetime.strptime("14:00", "%H:%M").time()
 
 def fundamentals(request):
     if request.method == 'POST':
-        req = request.POST['required']
+        #req = request.POST['required']
         start = request.POST['starts']
         time_str = request.POST['time']
         email = request.POST['email']
@@ -46,10 +47,11 @@ def fundamentals(request):
             # Zaman çakışması kontrolü
             if (start_datetime < event_end and end_datetime > event_start):
                 return render(request, 'not_ available.html')
-        
+        if(time_obj<shift_1 and end_datetime>shift_2):
+            return render(request, 'not_ available.html')
         # Çakışma yoksa veritabanına kaydet
         event = Event.objects.create(
-            title=req,
+            # title=req,
             start_time=start_datetime,
             time=time_obj,
             attendee_email=email
@@ -90,6 +92,9 @@ def billing(request):
             # Zaman çakışması kontrolü
             if (start_datetime < event_end and end_datetime > event_start):
                 return render(request, 'not_ available.html')
+            
+        if(time_obj<shift_1 and end_datetime>shift_2):
+            return render(request, 'not_ available.html')
         
         # Çakışma yoksa veritabanına kaydet
         event = Event.objects.create(
@@ -134,7 +139,9 @@ def cycles(request):
             # Zaman çakışması kontrolü
             if (start_datetime < event_end and end_datetime > event_start):
                 return render(request, 'not_ available.html')
-        
+        if(time_obj<shift_1 and end_datetime>shift_2):
+            return render(request, 'not_ available.html')
+
         # Çakışma yoksa veritabanına kaydet
         event = Event.objects.create(
             title=req,
